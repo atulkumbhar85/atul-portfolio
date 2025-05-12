@@ -1,0 +1,12 @@
+.skills {
+  padding: 50px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.skills ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
