@@ -8,15 +8,22 @@ const LoadingScreen = ({ onLoadComplete }) => {
     const loaderRef = useRef(null);
     const progressRef = useRef(null);
     const textRef = useRef(null);
+    const percentageRef = useRef(null);
 
     useEffect(() => {
         const tl = gsap.timeline();
 
-        // Animate progress bar
+        // Animate progress bar and percentage
         tl.to(progressRef.current, {
             width: '100%',
             duration: 2,
-            ease: 'power2.inOut'
+            ease: 'power2.inOut',
+            onUpdate: function () {
+                const progress = Math.round(this.progress() * 100);
+                if (percentageRef.current) {
+                    percentageRef.current.textContent = `${progress}%`;
+                }
+            }
         })
             .to(textRef.current, {
                 opacity: 0,
@@ -35,32 +42,36 @@ const LoadingScreen = ({ onLoadComplete }) => {
         return () => tl.kill();
     }, [onLoadComplete]);
 
-    return (
-        <div
-            ref={loaderRef}
-            className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center"
-        >
-            <div className="text-center">
+    return (<div
+        ref={loaderRef}
+        className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center"
+    >
+        <div className="text-center flex flex-col items-center">
+            <div
+                ref={textRef}
+                className="mb-8"
+            >
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                    Atul Kumbhar
+                </h1>
+                <p className="text-xl text-gray-300">
+                    Loading Portfolio...
+                </p>
+            </div>                <div className="w-64 md:w-80 h-2 bg-gray-700 rounded-full overflow-hidden mx-auto relative">
                 <div
-                    ref={textRef}
-                    className="mb-8"
+                    ref={progressRef}
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 w-0 rounded-full relative"
                 >
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-                        Atul Kumbhar
-                    </h1>
-                    <p className="text-xl text-gray-300">
-                        Loading Portfolio...
-                    </p>
-                </div>
-
-                <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
-                    <div
-                        ref={progressRef}
-                        className="h-full bg-gradient-to-r from-blue-500 to-purple-600 w-0 rounded-full"
-                    />
+                    {/* Progress bar glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur-sm opacity-50"></div>
                 </div>
             </div>
+            {/* Loading percentage text */}
+            <div className="mt-4 text-sm text-gray-400 font-mono">
+                <span ref={percentageRef}>0%</span>
+            </div>
         </div>
+    </div>
     );
 };
 
