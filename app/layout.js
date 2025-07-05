@@ -1,20 +1,16 @@
 // app/layout.js
-import Navbar from './components/Navbar';
 import './globals.css';
 
 export const metadata = {
   title: 'Atul Kumbhar Portfolio',
-  description: 'Professional portfolio of Atul Kumbhar',
+  description: 'Professional animated portfolio of Atul Kumbhar with 3D elements',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <header>
-          <Navbar />
-        </header>
-        <main>{children}</main>
+      <body className="overflow-hidden">
+        {children}
       </body>
     </html>
   );
