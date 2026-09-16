@@ -1,57 +1,25 @@
-// app/page.js
 'use client';
 
-import { useState, useRef } from 'react';
+import { ScrollProgress } from '@/components/motion-primitives/scroll-progress';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
-import AnimatedContainer from './components/AnimatedContainer';
-import Navbar from './components/Navbar';
-import LoadingScreen from './components/LoadingScreen';
 
 export default function Home() {
-  const [currentSection, setCurrentSection] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const containerRef = useRef(null);
-
-  const sections = [
-    <About key="about" />,
-    <Skills key="skills" />,
-    <Projects key="projects" />,
-    <Contact key="contact" />
-  ];
-
-  const handleSectionChange = (sectionIndex) => {
-    console.log('handleSectionChange called with:', sectionIndex);
-    if (sectionIndex >= 0 && sectionIndex < sections.length) {
-      if (containerRef.current?.navigateToSection) {
-        containerRef.current.navigateToSection(sectionIndex);
-      }
-    }
-  };
-
-  const handleLoadComplete = () => {
-    setIsLoading(false);
-  };
-
-  if (isLoading) {
-    return <LoadingScreen onLoadComplete={handleLoadComplete} />;
-  }
-
   return (
-    <div className="relative">
-      <Navbar
-        currentSection={currentSection}
-        onSectionChange={handleSectionChange}
-      />
-      <AnimatedContainer
-        ref={containerRef}
-        currentSection={currentSection}
-        setCurrentSection={setCurrentSection}
-      >
-        {sections}
-      </AnimatedContainer>
+    <div className="relative min-h-screen bg-bg text-ink">
+      <ScrollProgress className="fixed top-0 left-0 right-0 z-[60] h-0.5 bg-accent" />
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </main>
     </div>
   );
 }
